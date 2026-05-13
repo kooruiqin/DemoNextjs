@@ -19,6 +19,9 @@ const envSchema = z.object({
   RESEND_API_KEY: z.string().optional(),
   EMAIL_FROM: z.email().optional(),
 
+  // Google Maps Places API (optional — only required for /spin "Near me" mode)
+  GOOGLE_MAPS_API_KEY: z.string().optional(),
+
   // Node env
   NODE_ENV: z.enum(["development", "test", "production"]).default("development"),
 });

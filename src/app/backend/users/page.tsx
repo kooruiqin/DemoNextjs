@@ -1,6 +1,6 @@
 import { listUsers } from "@/server/queries/users";
 import { requireAdmin } from "@/lib/permissions";
-import { DataTable } from "@/app/(app)/posts/data-table";
+import { DataTable } from "@/app/backend/posts/data-table";
 import { columns } from "./columns";
 import { AddUserDialog } from "./add-user-dialog";
 

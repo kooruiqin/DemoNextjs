@@ -24,7 +24,7 @@ export async function updateProfile(
       body: { name: parsed.data.name },
     });
 
-    revalidatePath("/profile", "layout");
+    revalidatePath("/backend/profile", "layout");
     return { data: { name: parsed.data.name } };
   } catch (e) {
     console.error("updateProfile failed:", e);

@@ -6,10 +6,45 @@ This file gives Claude Code (and Cursor / Codex / any compatible agent) the rule
 
 ## 1. Project Identity
 
-- **Type**: Full-stack web application
+- **Name**: Daily Mini (working title — rename freely)
+- **Type**: Personal daily-use mini app (single-user / small-group, authenticated)
 - **Hosting target**: Self-hosted (Hetzner + Coolify) or free-tier cloud (Vercel + Neon). Code must be portable between both.
-- **Audience**: TBD — fill in
+- **Audience**: The signed-in user managing their own food picks and wallet entries. No public/anonymous surface beyond auth pages.
 - **Core principle**: Ship simple, working features. Prefer boring, proven choices over clever ones.
+
+### 1a. Features (scope)
+
+Two independent feature modules. Each lives under `src/app/(app)/<feature>/` and owns its own schema, Zod schemas, server actions, and components.
+
+#### Spin — pick what to eat
+
+A wheel-spin tool to decide lunch / dinner from the user's own list of options.
+
+- **Spin page** (`/spin`) — meal-type tabs (lunch / dinner), a wheel showing the user's enabled options for that meal, a "Spin" button, and a result display when it stops.
+- **Settings** (`/spin/settings` or a drawer) — CRUD the list of food options, with `mealType` (lunch / dinner / both), an `enabled` toggle, and an optional `weight` (default 1) to bias the wheel.
+- **Recent records** — last N spins (timestamp, mealType, chosen option, optional "accepted / rejected" mark). Compact list on the spin page; full history at `/spin/history`.
+
+Suggested tables (one file each under `src/db/schema/`):
+- `food_options` — `id`, `userId` (FK → user), `name`, `mealType` (`"lunch" | "dinner" | "both"`), `enabled` (bool), `weight` (int, default 1), `createdAt`, `updatedAt`.
+- `spin_records` — `id`, `userId`, `mealType`, `optionId` (FK → `food_options`, `onDelete: "set null"` so history survives deletes), `optionName` (denormalized text snapshot for deleted options), `accepted` (bool, nullable), `createdAt`.
+
+#### Wallet — track money in / out
+
+A simple personal ledger. Not a budgeting app — just record entries and tag them.
+
+- **Wallet page** (`/wallet`) — running summary (in / out / net), filters (date range, kind, label), `<DataTable>` of entries.
+- **Entry form** — `kind` (`"in" | "out"`), `amount`, `place` (where — free text), `description` (what — free text), `occurredAt` (defaults to now), one or more `labels`.
+- **Labels** — user-defined tags ("food", "transport", "salary", …). Created inline from the entry form, managed at `/wallet/labels`.
+
+Suggested tables:
+- `wallet_entries` — `id`, `userId`, `kind` (`"in" | "out"`), `amount` (`numeric(12,2)` — store as string in Drizzle, never `float`), `currency` (text, default `"MYR"` — adjust to your locale), `place` (text, nullable), `description` (text, nullable), `occurredAt` (timestamp), `createdAt`, `updatedAt`.
+- `wallet_labels` — `id`, `userId`, `name`, `color` (text, optional hex), `createdAt`. Unique on `(userId, name)`.
+- `wallet_entry_labels` — join table: `entryId` (FK, cascade), `labelId` (FK, cascade), composite PK `(entryId, labelId)`.
+
+Rules that apply across both features:
+- Every row is scoped to the signed-in user via `userId`. Every query and action MUST filter by `session.user.id` — there is no admin / shared view.
+- Money uses `numeric(12,2)`, never `float` / `real`. Format for display with `Intl.NumberFormat`, not custom string ops.
+- Timestamps are stored with timezone (Drizzle: `timestamp("...", { withTimezone: true })`). Render in the user's local TZ on the client.
 
 ### Skills loaded for this project
 

@@ -82,12 +82,12 @@ export function HeaderUserMenu({ user }: HeaderUserMenuProps) {
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuItem asChild>
-          <Link href="/profile">
+          <Link href="/backend/profile">
             <UserIcon className="mr-2 h-4 w-4" /> Profile
           </Link>
         </DropdownMenuItem>
         <DropdownMenuItem asChild>
-          <Link href="/settings">
+          <Link href="/backend/settings">
             <SettingsIcon className="mr-2 h-4 w-4" /> Settings
           </Link>
         </DropdownMenuItem>

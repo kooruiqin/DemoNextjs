@@ -15,7 +15,7 @@ export default async function PostsPage() {
           <p className="text-muted-foreground">Your posts. {posts.length} total.</p>
         </div>
         <Button asChild>
-          <Link href="/posts/new">New post</Link>
+          <Link href="/backend/posts/new">New post</Link>
         </Button>
       </div>
       <DataTable columns={columns} data={posts} />

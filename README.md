@@ -1,38 +1,56 @@
-# Next.js Starter
+# Daily Mini
 
-Personal starter template for vibe coding modern full-stack apps.
-git clone https://github.com/MiraCodeCompany/nextjs-starter.git my-app
-**Stack:** Next.js 15 · TypeScript · Tailwind 4 · shadcn/ui · Drizzle · Postgres (Neon) · Better-Auth · React Hook Form · Zod · TanStack Table
+A personal daily-use mini app with two small tools that keep coming up:
+
+- **Spin** — a wheel-spinner that picks lunch or dinner from your own list of food options, with settings and a record of recent spins.
+- **Wallet** — a quick ledger to record money in / out, with where, what, and labels.
+
+Single user (authenticated). Built on the same opinionated Next.js stack the rest of my projects use, so the patterns transfer.
+
+**Stack:** Next.js 16 · TypeScript · Tailwind · shadcn/ui · Drizzle · Postgres (Neon or self-hosted) · Better-Auth · React Hook Form · Zod · TanStack Table
 
 **Pre-loaded Claude Skills:** `frontend-design` · `next-best-practices` · `shadcn`. They live in `.claude/skills/` and activate automatically in Claude Code, Cursor, Codex, and any tool following the Agent Skills standard. See [`.claude/skills/README.md`](./.claude/skills/README.md).
 
-This template is opinionated. Read [`CLAUDE.md`](./CLAUDE.md) — it's the source of truth for conventions and is read automatically by Claude Code / Cursor / Codex.
+The conventions and feature scope live in [`CLAUDE.md`](./CLAUDE.md) — read that first.
+
+---
+
+## Features
+
+### Spin — what to eat
+
+- `/spin` — meal-type tabs (lunch / dinner), wheel of your enabled options, spin button, result.
+- Settings: add / edit / disable food options per meal type, optional weight to bias the wheel.
+- Recent spins shown inline; full history at `/spin/history` with an "accepted / rejected" mark so you can tell whether the wheel is actually useful.
+
+### Wallet — money in / out
+
+- `/wallet` — running in / out / net summary, filterable table of entries (date range, kind, label).
+- Entry form: in / out, amount, where, what, when, one or more labels (create new labels inline).
+- Labels managed at `/wallet/labels`.
+- Money stored as `numeric(12,2)` and rendered with `Intl.NumberFormat` — no floats.
 
 ---
 
 ## Quick start
 
 ```bash
-# 1. Clone (or use as GitHub template)
-pnpm dlx degit your-name/nextjs-starter my-app
-cd my-app
-
-# 2. Install
+# 1. Install
 pnpm install
 
-# 3. Set up env
+# 2. Set up env
 cp .env.example .env.local
 # Fill in DATABASE_URL (Neon pooled URL) and BETTER_AUTH_SECRET
 # Generate a secret: openssl rand -base64 32
 
-# 4. Push schema to your DB
+# 3. Push schema to your DB
 pnpm db:push
 
-# 5. Run
+# 4. Run
 pnpm dev
 ```
 
-Open <http://localhost:3000>, sign up, and you're in.
+Open <http://localhost:3000>, sign up, and you're in. The first thing to do is seed a few food options under `/spin/settings` so the wheel has something to spin.
 
 ---
 
@@ -82,17 +100,17 @@ src/
 
 ### Add a new table
 
-1. Create `src/db/schema/<name>.ts` (follow the `posts.ts` pattern — cuid2 PK, timestamps, FK with cascade)
+1. Create `src/db/schema/<name>.ts` — cuid2 PK, `createdAt` / `updatedAt`, FKs with explicit `onDelete`. `userId` FK is mandatory for user-owned rows.
 2. Re-export from `src/db/schema/index.ts`
 3. Run `pnpm db:generate` then `pnpm db:migrate`
 
 ### Add a new feature
 
 1. Drizzle schema → `src/db/schema/`
-2. Zod schema → `src/lib/schemas/`
-3. Server Action → `src/server/actions/`
-4. Pages → `src/app/(app)/<feature>/`
-5. Follow the patterns in the `posts/` example
+2. Zod schema → `src/lib/schemas/` (single source of truth; client form + server action import the same schema)
+3. Server Action → `src/server/actions/<feature>.ts` (auth check → Zod validate → DB op → `revalidatePath`)
+4. Pages → `src/app/(app)/<feature>/` (Server Components by default; `"use client"` only on the smallest leaf that needs it)
+5. Follow the patterns already in `spin/` and `wallet/`
 
 ### Add a shadcn component
 
@@ -126,19 +144,6 @@ socialProviders: {
 ```
 
 Then add the corresponding env vars to `src/lib/env.ts` and `.env.example`.
-
----
-
-## Using as a GitHub template
-
-1. Push this repo to GitHub
-2. Settings → General → check **"Template repository"**
-3. For new projects, click **"Use this template"** on GitHub, or run:
-   ```bash
-   pnpm dlx degit your-name/nextjs-starter my-new-app
-   ```
-
-When you discover patterns you keep repeating across projects, port them back into the template.
 
 ---
 
@@ -180,19 +185,15 @@ For the database in self-hosted setups, either keep Neon (just change `DATABASE_
 
 ---
 
-## What's NOT in this template (and why)
+## Not in scope (yet)
 
-- **Marketing pages, blog, MDX** — varies too much per project
-- **Stripe / billing** — fork to a `nextjs-saas-starter` repo when you build that
-- **Admin dashboard** — same as above
-- **Email templates** — they're product-specific
-- **Analytics** — pick what you want at deploy time
-- **Tests** — add when you have something stable to test
-
-The principle: starter contains what *every* project needs. Anything project-specific is added in the project, not the template.
+- **Budgets / forecasting** — wallet is a ledger, not a budgeting app. If a category-budget view ends up useful, derive it from the existing entries; don't add a new table.
+- **Multi-user / sharing** — every row is scoped to one `userId`. No shared wallets, no household mode.
+- **Mobile app** — the web app is mobile-first (test at 375px). Native shell is out of scope.
+- **Analytics / receipts OCR** — keep entries manual until that genuinely hurts.
 
 ---
 
 ## License
 
-MIT — use however you want.
+MIT.

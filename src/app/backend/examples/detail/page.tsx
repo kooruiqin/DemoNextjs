@@ -27,7 +27,7 @@ export default function DetailExamplePage() {
     <div className="space-y-6">
       <div className="flex items-center gap-4">
         <Button variant="ghost" size="sm" asChild>
-          <Link href={"/examples/filter-table" as Route}>
+          <Link href={"/backend/examples/filter-table" as Route}>
             <ArrowLeft />
             Back
           </Link>

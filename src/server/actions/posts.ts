@@ -34,7 +34,7 @@ export async function createPost(input: unknown): Promise<ActionResult<{ id: str
       .values({ ...parsed.data, authorId: session.user.id })
       .returning({ id: posts.id });
 
-    revalidatePath("/posts");
+    revalidatePath("/backend/posts");
     return { data: { id: created.id } };
   } catch (e) {
     console.error("createPost failed:", e);
@@ -60,7 +60,7 @@ export async function updatePost(input: unknown): Promise<ActionResult<{ id: str
 
     if (!updated) return { error: "Post not found or unauthorized" };
 
-    revalidatePath("/posts");
+    revalidatePath("/backend/posts");
     return { data: { id: updated.id } };
   } catch (e) {
     console.error("updatePost failed:", e);
@@ -81,7 +81,7 @@ export async function deletePost(id: string): Promise<ActionResult<{ id: string 
 
     if (!deleted) return { error: "Post not found or unauthorized" };
 
-    revalidatePath("/posts");
+    revalidatePath("/backend/posts");
     return { data: { id: deleted.id } };
   } catch (e) {
     console.error("deletePost failed:", e);

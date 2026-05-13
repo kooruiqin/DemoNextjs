@@ -50,7 +50,7 @@ export default function LoginPage() {
       return;
     }
     markSplashOnNextLoad();
-    router.push("/dashboard");
+    router.push("/");
     router.refresh();
   }
 

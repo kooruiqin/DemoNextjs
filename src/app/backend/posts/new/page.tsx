@@ -41,7 +41,7 @@ export default function NewPostPage() {
       return;
     }
     toast.success("Post created");
-    router.push("/posts");
+    router.push("/backend/posts");
     router.refresh();
   }
 

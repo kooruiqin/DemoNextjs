@@ -5,8 +5,8 @@ import { Toaster } from "@/components/ui/sonner";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "App",
-  description: "Built on the Next.js + Drizzle + Better-Auth starter",
+  title: "Daily Mini",
+  description: "Spin to decide what to eat. Track money in and out. That's it.",
 };
 
 export default function RootLayout({

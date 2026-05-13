@@ -53,7 +53,7 @@ export default function SignupPage() {
     }
     toast.success("Account created");
     markSplashOnNextLoad();
-    router.push("/dashboard");
+    router.push("/");
     router.refresh();
   }
 

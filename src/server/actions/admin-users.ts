@@ -37,7 +37,7 @@ export async function createUser(input: unknown): Promise<ActionResult> {
         role: parsed.data.role,
       },
     });
-    revalidatePath("/users");
+    revalidatePath("/backend/users");
     return { data: undefined };
   } catch (e) {
     if (isApiError(e)) {
@@ -65,7 +65,7 @@ export async function setUserRole(
       headers: await headers(),
       body: { userId, role },
     });
-    revalidatePath("/users");
+    revalidatePath("/backend/users");
     return { data: undefined };
   } catch (e) {
     console.error("setUserRole failed:", e);
@@ -85,7 +85,7 @@ export async function banUser(
       headers: await headers(),
       body: { userId, banReason: banReason || "Banned by an admin" },
     });
-    revalidatePath("/users");
+    revalidatePath("/backend/users");
     return { data: undefined };
   } catch (e) {
     console.error("banUser failed:", e);
@@ -102,7 +102,7 @@ export async function unbanUser(userId: string): Promise<ActionResult> {
       headers: await headers(),
       body: { userId },
     });
-    revalidatePath("/users");
+    revalidatePath("/backend/users");
     return { data: undefined };
   } catch (e) {
     console.error("unbanUser failed:", e);

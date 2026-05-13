@@ -55,35 +55,35 @@ type NavItem = {
 };
 
 const platformNav: NavItem[] = [
-  { title: "Dashboard", href: "/dashboard" as Route, icon: LayoutDashboard },
-  { title: "Analytics", href: "/analytics" as Route, icon: BarChart3, adminOnly: true },
-  { title: "Users", href: "/users" as Route, icon: Users, adminOnly: true },
-  { title: "Posts", href: "/posts" as Route, icon: FileText },
+  { title: "Dashboard", href: "/backend/dashboard" as Route, icon: LayoutDashboard },
+  { title: "Analytics", href: "/backend/analytics" as Route, icon: BarChart3, adminOnly: true },
+  { title: "Users", href: "/backend/users" as Route, icon: Users, adminOnly: true },
+  { title: "Posts", href: "/backend/posts" as Route, icon: FileText },
 ];
 
 const accountNav: NavItem[] = [
-  { title: "Profile", href: "/profile" as Route, icon: UserIcon },
-  { title: "Settings", href: "/settings" as Route, icon: SettingsIcon },
+  { title: "Profile", href: "/backend/profile" as Route, icon: UserIcon },
+  { title: "Settings", href: "/backend/settings" as Route, icon: SettingsIcon },
 ];
 
 const examplesNav: NavItem[] = [
-  { title: "Detail page", href: "/examples/detail" as Route, icon: FileSearch },
-  { title: "Wizard", href: "/examples/wizard" as Route, icon: ListOrdered },
-  { title: "Preferences", href: "/examples/preferences" as Route, icon: SlidersHorizontal },
-  { title: "Modal", href: "/examples/modal" as Route, icon: Square },
-  { title: "Toast", href: "/examples/toast" as Route, icon: Bell },
-  { title: "Chat", href: "/examples/chat" as Route, icon: MessageCircle },
+  { title: "Detail page", href: "/backend/examples/detail" as Route, icon: FileSearch },
+  { title: "Wizard", href: "/backend/examples/wizard" as Route, icon: ListOrdered },
+  { title: "Preferences", href: "/backend/examples/preferences" as Route, icon: SlidersHorizontal },
+  { title: "Modal", href: "/backend/examples/modal" as Route, icon: Square },
+  { title: "Toast", href: "/backend/examples/toast" as Route, icon: Bell },
+  { title: "Chat", href: "/backend/examples/chat" as Route, icon: MessageCircle },
 ];
 
 const tablesNav: NavItem[] = [
-  { title: "Filter", href: "/examples/filter-table" as Route, icon: Filter },
-  { title: "Inline edit", href: "/examples/edit-table" as Route, icon: Pencil },
-  { title: "Row selection", href: "/examples/select-table" as Route, icon: CheckSquare },
-  { title: "Reorder rows", href: "/examples/reorder-table" as Route, icon: GripVertical },
-  { title: "Expandable rows", href: "/examples/expand-table" as Route, icon: ChevronRight },
-  { title: "Sticky header", href: "/examples/sticky-header-table" as Route, icon: PanelTop },
-  { title: "Horizontal scroll", href: "/examples/scroll-table" as Route, icon: MoveHorizontal },
-  { title: "Footer summary", href: "/examples/footer-summary-table" as Route, icon: Sigma },
+  { title: "Filter", href: "/backend/examples/filter-table" as Route, icon: Filter },
+  { title: "Inline edit", href: "/backend/examples/edit-table" as Route, icon: Pencil },
+  { title: "Row selection", href: "/backend/examples/select-table" as Route, icon: CheckSquare },
+  { title: "Reorder rows", href: "/backend/examples/reorder-table" as Route, icon: GripVertical },
+  { title: "Expandable rows", href: "/backend/examples/expand-table" as Route, icon: ChevronRight },
+  { title: "Sticky header", href: "/backend/examples/sticky-header-table" as Route, icon: PanelTop },
+  { title: "Horizontal scroll", href: "/backend/examples/scroll-table" as Route, icon: MoveHorizontal },
+  { title: "Footer summary", href: "/backend/examples/footer-summary-table" as Route, icon: Sigma },
 ];
 
 type Props = React.ComponentProps<typeof Sidebar> & {
@@ -109,12 +109,12 @@ export function AppSidebar({ user, isAdmin, ...props }: Props) {
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton size="lg" asChild>
-              <Link href="/dashboard">
+              <Link href="/backend/dashboard">
                 <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
                   <Command className="size-4" />
                 </div>
                 <div className="grid flex-1 text-left text-sm leading-tight">
-                  <span className="truncate font-semibold">My App</span>
+                  <span className="truncate font-semibold">Daily Mini</span>
                   <span className="truncate text-xs text-muted-foreground">Admin</span>
                 </div>
               </Link>

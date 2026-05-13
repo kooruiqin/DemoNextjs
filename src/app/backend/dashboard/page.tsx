@@ -72,7 +72,7 @@ export default async function DashboardPage() {
               <CardDescription>The last 5 posts created.</CardDescription>
             </div>
             <Button variant="ghost" size="sm" asChild>
-              <Link href="/posts">
+              <Link href="/backend/posts">
                 View all <ArrowRight className="ml-1 h-3.5 w-3.5" />
               </Link>
             </Button>
@@ -81,7 +81,7 @@ export default async function DashboardPage() {
             {stats.recentPosts.length === 0 ? (
               <p className="py-6 text-center text-sm text-muted-foreground">
                 No posts yet.{" "}
-                <Link href="/posts/new" className="underline">
+                <Link href="/backend/posts/new" className="underline">
                   Create one
                 </Link>
                 .
@@ -114,13 +114,13 @@ export default async function DashboardPage() {
           </CardHeader>
           <CardContent className="flex flex-col gap-2">
             <Button asChild>
-              <Link href="/posts/new">New post</Link>
+              <Link href="/backend/posts/new">New post</Link>
             </Button>
             <Button variant="outline" asChild>
-              <Link href="/users">Manage users</Link>
+              <Link href="/backend/users">Manage users</Link>
             </Button>
             <Button variant="outline" asChild>
-              <Link href="/settings">Open settings</Link>
+              <Link href="/backend/settings">Open settings</Link>
             </Button>
           </CardContent>
         </Card>

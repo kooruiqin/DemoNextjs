@@ -3,12 +3,13 @@
 import { usePathname } from "next/navigation";
 
 const TITLES: Record<string, string> = {
-  "/dashboard": "Dashboard",
-  "/analytics": "Analytics",
-  "/users": "Users",
-  "/posts": "Posts",
-  "/profile": "Profile",
-  "/settings": "Settings",
+  "/backend/dashboard": "Dashboard",
+  "/backend/analytics": "Analytics",
+  "/backend/users": "Users",
+  "/backend/posts": "Posts",
+  "/backend/profile": "Profile",
+  "/backend/settings": "Settings",
+  "/backend/examples": "Examples",
 };
 
 export function PageTitle() {

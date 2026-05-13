@@ -93,7 +93,7 @@ export default async function SettingsPage() {
             </CardHeader>
             <CardContent>
               <Button variant="outline" asChild>
-                <Link href="/profile">Edit profile</Link>
+                <Link href="/backend/profile">Edit profile</Link>
               </Button>
             </CardContent>
           </Card>
