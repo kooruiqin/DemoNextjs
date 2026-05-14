@@ -7,6 +7,7 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { weightedPick, type WheelOption } from "./wheel-types";
+import { Confetti } from "./confetti";
 
 type SlotRollerProps = {
   options: WheelOption[];
@@ -80,6 +81,7 @@ export function SlotRoller({
         aria-hidden
         className="pointer-events-none absolute inset-0 [background:radial-gradient(60%_60%_at_50%_40%,oklch(0.96_0.06_50/.55),transparent_70%)]"
       />
+      {result ? <Confetti /> : null}
       <CardContent className="relative flex flex-col items-center gap-8 px-4 py-10 md:py-12">
         {n === 0 ? (
           <div className="py-8 text-center text-sm text-muted-foreground">

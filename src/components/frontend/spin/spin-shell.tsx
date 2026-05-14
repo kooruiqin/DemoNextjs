@@ -16,13 +16,14 @@ import { RecentSpins } from "./recent-spins";
 type Mode = "list" | "nearby";
 
 type Props = {
-  options: FoodOption[];
+  initialOptions: FoodOption[];
   initialMeal: MealType;
   initialRecords: SpinRecord[];
 };
 
-export function SpinShell({ options, initialMeal, initialRecords }: Props) {
+export function SpinShell({ initialOptions, initialMeal, initialRecords }: Props) {
   const [mode, setMode] = React.useState<Mode>("list");
+  const [options, setOptions] = React.useState<FoodOption[]>(initialOptions);
   const [records, setRecords] = React.useState<SpinRecord[]>(initialRecords);
 
   function appendResult(entry: { mealType: MealType; optionName: string }) {
@@ -66,6 +67,7 @@ export function SpinShell({ options, initialMeal, initialRecords }: Props) {
           {mode === "list" ? (
             <SpinFromList
               options={options}
+              onOptionsChange={setOptions}
               initialMeal={initialMeal}
               onResult={appendResult}
             />

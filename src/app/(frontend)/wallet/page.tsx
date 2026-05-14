@@ -1,7 +1,12 @@
 import { WalletModule } from "@/components/frontend/wallet-module";
-import { MOCK_WALLET_ENTRIES, MOCK_WALLET_LABELS } from "@/lib/mock/daily";
+import { listWalletEntries, listWalletLabels } from "@/server/queries/wallet";
 
-export default function WalletPage() {
+export default async function WalletPage() {
+  const [entries, labels] = await Promise.all([
+    listWalletEntries(),
+    listWalletLabels(),
+  ]);
+
   return (
     <div className="space-y-8">
       <header className="flex flex-col gap-2">
@@ -15,7 +20,7 @@ export default function WalletPage() {
         </p>
       </header>
 
-      <WalletModule entries={MOCK_WALLET_ENTRIES} labels={MOCK_WALLET_LABELS} />
+      <WalletModule entries={entries} labels={labels} />
     </div>
   );
 }

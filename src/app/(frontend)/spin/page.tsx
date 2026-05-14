@@ -16,7 +16,7 @@ export default function SpinPage() {
       </header>
 
       <SpinShell
-        options={MOCK_FOOD_OPTIONS}
+        initialOptions={MOCK_FOOD_OPTIONS}
         initialMeal="lunch"
         initialRecords={MOCK_SPIN_RECORDS}
       />

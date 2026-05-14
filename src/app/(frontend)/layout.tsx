@@ -2,7 +2,7 @@ import { redirect } from "next/navigation";
 
 import { getSession } from "@/lib/session";
 import { LoginSplash } from "@/components/login-splash";
-import { FrontendTopNav } from "@/components/frontend/top-nav";
+import { FrontendBottomNav, FrontendTopNav } from "@/components/frontend/top-nav";
 
 export default async function FrontendLayout({
   children,
@@ -28,7 +28,8 @@ export default async function FrontendLayout({
       />
       <LoginSplash />
       <FrontendTopNav user={user} />
-      <main className="mx-auto max-w-6xl px-4 pb-16 pt-6 md:px-6 md:pt-10">{children}</main>
+      <main className="mx-auto max-w-6xl px-4 pb-28 pt-6 md:px-6 md:pb-16 md:pt-10">{children}</main>
+      <FrontendBottomNav />
     </div>
   );
 }

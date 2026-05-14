@@ -4,6 +4,7 @@ export type FoodOption = {
   id: string;
   name: string;
   mealType: MealType | "both";
+  enabled: boolean;
   weight: number;
 };
 
@@ -35,14 +36,14 @@ export type WalletEntry = {
 };
 
 export const MOCK_FOOD_OPTIONS: FoodOption[] = [
-  { id: "f1", name: "Chicken rice", mealType: "both", weight: 1 },
-  { id: "f2", name: "Nasi lemak", mealType: "both", weight: 1 },
-  { id: "f3", name: "Char kway teow", mealType: "lunch", weight: 1 },
-  { id: "f4", name: "Wantan mee", mealType: "lunch", weight: 1 },
-  { id: "f5", name: "Bak kut teh", mealType: "dinner", weight: 1 },
-  { id: "f6", name: "Curry mee", mealType: "lunch", weight: 1 },
-  { id: "f7", name: "Hokkien mee", mealType: "dinner", weight: 1 },
-  { id: "f8", name: "Yong tau foo", mealType: "both", weight: 1 },
+  { id: "f1", name: "Chicken rice", mealType: "both", enabled: true, weight: 1 },
+  { id: "f2", name: "Nasi lemak", mealType: "both", enabled: true, weight: 1 },
+  { id: "f3", name: "Char kway teow", mealType: "lunch", enabled: true, weight: 1 },
+  { id: "f4", name: "Wantan mee", mealType: "lunch", enabled: true, weight: 1 },
+  { id: "f5", name: "Bak kut teh", mealType: "dinner", enabled: true, weight: 1 },
+  { id: "f6", name: "Curry mee", mealType: "lunch", enabled: true, weight: 1 },
+  { id: "f7", name: "Hokkien mee", mealType: "dinner", enabled: true, weight: 1 },
+  { id: "f8", name: "Yong tau foo", mealType: "both", enabled: true, weight: 1 },
 ];
 
 const today = new Date();

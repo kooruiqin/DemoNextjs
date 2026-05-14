@@ -7,6 +7,7 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { weightedPick, type WheelOption } from "./wheel-types";
+import { Confetti } from "./confetti";
 
 export type { WheelOption } from "./wheel-types";
 
@@ -23,15 +24,17 @@ type WheelViewProps = {
   resetKey?: string | number;
 };
 
+// Deeper warm tones in the 500–700 range so white slice labels have real
+// contrast. Anything in the 300/400 range washes the text out.
 const SLICE_COLORS = [
-  "#fb923c",
-  "#f97316",
-  "#fbbf24",
-  "#f59e0b",
-  "#fb7185",
-  "#f43f5e",
-  "#ef4444",
-  "#e879f9",
+  "#ea580c", // orange-600
+  "#c2410c", // orange-700
+  "#d97706", // amber-600
+  "#b45309", // amber-700
+  "#e11d48", // rose-600
+  "#be123c", // rose-700
+  "#dc2626", // red-600
+  "#a21caf", // fuchsia-700
 ] as const;
 
 const SIZE = 360;
@@ -40,9 +43,17 @@ const CENTER = SIZE / 2;
 const FULL_TURNS = 6;
 const SPIN_MS = 4200;
 
+// Math.sin / Math.cos aren't bit-deterministic across runtimes (server libm vs
+// browser libm), so we round to 3 decimals. SVG sub-pixel rendering is fine
+// with this precision and the rounded strings agree on both ends of hydration.
+const round3 = (n: number) => Math.round(n * 1000) / 1000;
+
 function polarToCartesian(angleDeg: number, r: number) {
   const rad = ((angleDeg - 90) * Math.PI) / 180;
-  return { x: CENTER + r * Math.cos(rad), y: CENTER + r * Math.sin(rad) };
+  return {
+    x: round3(CENTER + r * Math.cos(rad)),
+    y: round3(CENTER + r * Math.sin(rad)),
+  };
 }
 
 function sliceArcPath(startAngle: number, endAngle: number) {
@@ -112,6 +123,7 @@ export function WheelView({
         aria-hidden
         className="pointer-events-none absolute inset-0 [background:radial-gradient(60%_60%_at_50%_40%,oklch(0.96_0.06_50/.6),transparent_70%)]"
       />
+      {result ? <Confetti /> : null}
       <CardContent className="relative flex flex-col items-center gap-8 px-4 py-10 md:py-12">
         <div className="relative">
           <div className="absolute left-1/2 top-0 z-10 -translate-x-1/2 -translate-y-1">
@@ -125,8 +137,9 @@ export function WheelView({
             aria-label="Spin wheel"
           >
             <defs>
-              <radialGradient id="wheel-inner" cx="50%" cy="50%" r="60%">
-                <stop offset="0%" stopColor="rgb(255,255,255)" stopOpacity="0.95" />
+              {/* Subtle hub highlight only — kept small so it doesn't wash out the label band. */}
+              <radialGradient id="wheel-inner" cx="50%" cy="50%" r="30%">
+                <stop offset="0%" stopColor="rgb(255,255,255)" stopOpacity="0.5" />
                 <stop offset="100%" stopColor="rgb(255,255,255)" stopOpacity="0" />
               </radialGradient>
             </defs>
@@ -168,8 +181,8 @@ export function WheelView({
                         fill="white"
                         style={{
                           paintOrder: "stroke",
-                          stroke: "rgba(0,0,0,0.18)",
-                          strokeWidth: 0.5,
+                          stroke: "rgba(0,0,0,0.4)",
+                          strokeWidth: 0.8,
                         }}
                       >
                         {truncate(opt.label, n > 10 ? 10 : n > 8 ? 11 : 14)}
@@ -218,3 +231,4 @@ export function WheelView({
     </Card>
   );
 }
+

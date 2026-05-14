@@ -107,3 +107,24 @@
     font-feature-settings: "rlig" 1, "calt" 1;
   }
 }
+
+/* Confetti ribbons fired when the spin wheel lands on a result. Animated
+   inside the wheel card (parent has overflow-hidden), not the viewport. */
+@keyframes confetti-fall {
+  0% {
+    top: -24px;
+    transform: translateX(0) rotate(0deg);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  85% {
+    opacity: 1;
+  }
+  100% {
+    top: 100%;
+    transform: translateX(var(--confetti-drift, 0px)) rotate(var(--confetti-rotate, 360deg));
+    opacity: 0;
+  }
+}
