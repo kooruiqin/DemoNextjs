@@ -139,7 +139,7 @@ export function SlotRoller({
                 return (
                   <div
                     key={i}
-                    className="flex items-center px-6 text-sm"
+                    className="flex items-center px-4 text-sm sm:px-6"
                     style={{ height: ROW_HEIGHT }}
                   >
                     {renderRow ? (

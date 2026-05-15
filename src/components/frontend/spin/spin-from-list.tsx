@@ -22,7 +22,7 @@ type Props = {
   options: FoodOption[];
   onOptionsChange: (next: FoodOption[]) => void;
   initialMeal: MealType;
-  onResult: (entry: { mealType: MealType; optionName: string }) => void;
+  onResult: (entry: { mealType: MealType; optionName: string; optionId?: string }) => void;
 };
 
 export function SpinFromList({ options, onOptionsChange, initialMeal, onResult }: Props) {
@@ -76,7 +76,7 @@ export function SpinFromList({ options, onOptionsChange, initialMeal, onResult }
       <WheelView
         options={wheelOptions}
         resetKey={`${meal}|${wheelOptions.length}`}
-        onResult={(r) => onResult({ mealType: meal, optionName: r.label })}
+        onResult={(r) => onResult({ mealType: meal, optionName: r.label, optionId: r.id })}
         emptyState={
           <div className="flex flex-col items-center gap-3">
             <p>

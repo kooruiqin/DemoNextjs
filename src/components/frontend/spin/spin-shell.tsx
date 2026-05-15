@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import { List, MapPin } from "lucide-react";
+import { toast } from "sonner";
 
 import { cn } from "@/lib/utils";
 import {
@@ -9,6 +10,7 @@ import {
   type MealType,
   type SpinRecord,
 } from "@/lib/mock/daily";
+import { createSpinRecord, markSpinRecord } from "@/server/actions/spin";
 import { SpinFromList } from "./spin-from-list";
 import { SpinNearby } from "./spin-nearby";
 import { RecentSpins } from "./recent-spins";
@@ -26,19 +28,48 @@ export function SpinShell({ initialOptions, initialMeal, initialRecords }: Props
   const [options, setOptions] = React.useState<FoodOption[]>(initialOptions);
   const [records, setRecords] = React.useState<SpinRecord[]>(initialRecords);
 
-  function appendResult(entry: { mealType: MealType; optionName: string }) {
-    const rec: SpinRecord = {
-      id: `local-${Date.now()}`,
+  async function appendResult(entry: {
+    mealType: MealType;
+    optionName: string;
+    optionId?: string;
+  }) {
+    const tempId = `pending-${Date.now()}`;
+    const optimistic: SpinRecord = {
+      id: tempId,
       mealType: entry.mealType,
       optionName: entry.optionName,
       accepted: null,
       createdAt: new Date(),
     };
-    setRecords((prev) => [rec, ...prev].slice(0, 12));
+    setRecords((prev) => [optimistic, ...prev].slice(0, 12));
+
+    const res = await createSpinRecord({
+      mealType: entry.mealType,
+      optionName: entry.optionName,
+      optionId: entry.optionId,
+    });
+
+    if (res.error || !res.data) {
+      setRecords((prev) => prev.filter((r) => r.id !== tempId));
+      toast.error(res.error ?? "Failed to save spin");
+      return;
+    }
+
+    const saved = res.data;
+    setRecords((prev) => prev.map((r) => (r.id === tempId ? saved : r)));
   }
 
-  function markRecord(id: string, accepted: boolean) {
+  async function markRecord(id: string, accepted: boolean) {
+    const previous = records;
     setRecords((prev) => prev.map((r) => (r.id === id ? { ...r, accepted } : r)));
+
+    if (id.startsWith("pending-")) return;
+
+    const res = await markSpinRecord({ id, accepted });
+    if (res.error) {
+      setRecords(previous);
+      toast.error(res.error);
+    }
   }
 
   return (

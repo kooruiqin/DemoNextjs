@@ -23,7 +23,7 @@ import { SlotRoller } from "./slot-roller";
 import { type WheelOption } from "./wheel-types";
 
 type Props = {
-  onResult: (entry: { mealType: MealType; optionName: string }) => void;
+  onResult: (entry: { mealType: MealType; optionName: string; optionId?: string }) => void;
 };
 
 type State =
@@ -257,8 +257,8 @@ export function SpinNearby({ onResult }: Props) {
     <div className="space-y-6">
       <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
         <div className="flex items-center gap-2 text-sm text-muted-foreground">
-          <MapPin className="size-4" />
-          <span>
+          <MapPin className="size-4 shrink-0" />
+          <span className="min-w-0">
             {filtersActive ? (
               <>
                 <span className="font-medium text-foreground">{filteredPlaces.length}</span> of{" "}
@@ -272,12 +272,22 @@ export function SpinNearby({ onResult }: Props) {
             within {(radiusMeters / 1000).toFixed(0)} km
           </span>
         </div>
-        <div className="flex gap-2">
-          <Button size="sm" variant="ghost" className="gap-1.5" onClick={() => fetchPlaces(coords)}>
+        <div className="flex flex-wrap gap-2">
+          <Button
+            size="sm"
+            variant="ghost"
+            className="flex-1 gap-1.5 sm:flex-none"
+            onClick={() => fetchPlaces(coords)}
+          >
             <RefreshCw className="size-3.5" />
             Refresh
           </Button>
-          <Button size="sm" variant="outline" className="gap-1.5" onClick={requestLocation}>
+          <Button
+            size="sm"
+            variant="outline"
+            className="flex-1 gap-1.5 sm:flex-none"
+            onClick={requestLocation}
+          >
             <Navigation className="size-3.5" />
             Re-locate
           </Button>
@@ -285,7 +295,7 @@ export function SpinNearby({ onResult }: Props) {
       </div>
 
       <Card>
-        <CardContent className="space-y-3 p-4">
+        <CardContent className="space-y-3 p-3 sm:p-4">
           <FilterRow label="Category">
             {CATEGORIES.map((c) => {
               const count = categoryCounts[c.id];
@@ -402,9 +412,9 @@ export function SpinNearby({ onResult }: Props) {
           const p = placeById.get(r.id);
           if (!p) return <span className="truncate font-medium">{r.label}</span>;
           return (
-            <div className="flex w-full items-center gap-3">
+            <div className="flex w-full items-center gap-2 sm:gap-3">
               <span className="min-w-0 flex-1 truncate font-medium">{p.name}</span>
-              <span className="flex shrink-0 items-center gap-2 text-xs tabular-nums text-muted-foreground">
+              <span className="flex shrink-0 items-center gap-1.5 text-[11px] tabular-nums text-muted-foreground sm:gap-2 sm:text-xs">
                 {p.rating != null && (
                   <span className="inline-flex items-center gap-0.5">
                     <Star className="size-3 fill-amber-400 text-amber-400" />
@@ -428,8 +438,8 @@ export function SpinNearby({ onResult }: Props) {
 
 function FilterRow({ label, children }: { label: string; children: React.ReactNode }) {
   return (
-    <div className="flex flex-wrap items-center gap-2">
-      <span className="w-16 shrink-0 text-xs font-medium uppercase tracking-wider text-muted-foreground">
+    <div className="flex flex-col gap-1.5 sm:flex-row sm:flex-wrap sm:items-center sm:gap-2">
+      <span className="text-[10px] font-medium uppercase tracking-wider text-muted-foreground sm:w-16 sm:shrink-0 sm:text-xs">
         {label}
       </span>
       <div className="flex flex-wrap items-center gap-1.5">{children}</div>
@@ -470,19 +480,25 @@ function FilterChip({
 function IdleCard({ onStart }: { onStart: () => void }) {
   return (
     <Card className="relative overflow-hidden border-orange-200/50 bg-gradient-to-br from-orange-50 to-rose-50/60 dark:border-orange-900/30 dark:from-orange-950/40 dark:to-rose-950/30">
-      <CardContent className="relative flex flex-col items-center gap-5 py-14 text-center">
-        <div className="flex size-14 items-center justify-center rounded-2xl bg-gradient-to-br from-orange-400 to-rose-500 text-white shadow-lg shadow-orange-500/30">
-          <MapPin className="size-6" />
+      <CardContent className="relative flex flex-col items-center gap-4 px-4 py-10 text-center sm:gap-5 sm:py-14">
+        <div className="flex size-12 items-center justify-center rounded-2xl bg-gradient-to-br from-orange-400 to-rose-500 text-white shadow-lg shadow-orange-500/30 sm:size-14">
+          <MapPin className="size-5 sm:size-6" />
         </div>
         <div className="max-w-md space-y-1.5">
-          <h2 className="text-xl font-semibold tracking-tight">Pick from places near you</h2>
-          <p className="text-sm text-muted-foreground">
+          <h2 className="text-lg font-semibold tracking-tight sm:text-xl">
+            Pick from places near you
+          </h2>
+          <p className="text-balance text-sm text-muted-foreground">
             We&apos;ll pull restaurants, cafes, bars and takeaway spots within 3&nbsp;km of where
             you are, then let the reel choose. Your location stays on this device — only the
             coordinates are sent to find places.
           </p>
         </div>
-        <Button size="lg" onClick={onStart} className="h-12 gap-2 rounded-full px-7">
+        <Button
+          size="lg"
+          onClick={onStart}
+          className="h-12 w-full max-w-xs gap-2 rounded-full px-7 sm:w-auto"
+        >
           <Navigation className="size-4" />
           Find places near me
         </Button>
@@ -505,12 +521,14 @@ function StatusCard({ icon, title }: { icon: React.ReactNode; title: string }) {
 function PlaceResult({ place }: { place: NearbyPlace }) {
   const price = priceSymbols(place.priceLevel);
   return (
-    <div className="flex flex-col items-center gap-3">
+    <div className="flex flex-col items-center gap-3 px-2">
       <Badge className="gap-1 bg-foreground px-3 py-1 text-sm">
         <MapPin className="size-3" />
         {formatDistance(place.distanceMeters)} away
       </Badge>
-      <p className="max-w-md text-2xl font-semibold tracking-tight">{place.name}</p>
+      <p className="max-w-md text-balance text-xl font-semibold tracking-tight sm:text-2xl">
+        {place.name}
+      </p>
       <div className="flex flex-wrap items-center justify-center gap-x-3 gap-y-1 text-xs text-muted-foreground">
         {place.rating != null && (
           <span className="inline-flex items-center gap-1">
@@ -545,7 +563,9 @@ function PlaceResult({ place }: { place: NearbyPlace }) {
         )}
       </div>
       {place.formattedAddress && (
-        <p className="max-w-md text-xs text-muted-foreground">{place.formattedAddress}</p>
+        <p className="max-w-md text-balance text-xs text-muted-foreground">
+          {place.formattedAddress}
+        </p>
       )}
       <Button asChild size="sm" variant="outline" className="mt-1 gap-1.5">
         <a href={place.mapsUrl} target="_blank" rel="noopener noreferrer">

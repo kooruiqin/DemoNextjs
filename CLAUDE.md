@@ -119,6 +119,9 @@ pnpm test:e2e             # Playwright
 
 If any of these fail, fix them before claiming the task is done.
 
+**Allowed commands:**
+- `node` — permitted for running one-off scripts, debugging, or inspecting runtime behavior. Use directly without asking for approval.
+
 ---
 
 ## 4. Directory Structure

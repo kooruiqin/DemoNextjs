@@ -2,7 +2,13 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Home, UtensilsCrossed, Wallet, Settings2 } from "lucide-react";
+import {
+  Home,
+  UtensilsCrossed,
+  Wallet,
+  Settings2,
+  CalendarCheck,
+} from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";

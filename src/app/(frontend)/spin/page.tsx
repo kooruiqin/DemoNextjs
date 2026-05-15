@@ -1,7 +1,10 @@
 import { SpinShell } from "@/components/frontend/spin/spin-shell";
-import { MOCK_FOOD_OPTIONS, MOCK_SPIN_RECORDS } from "@/lib/mock/daily";
+import { MOCK_FOOD_OPTIONS } from "@/lib/mock/daily";
+import { listRecentSpins } from "@/server/queries/spin";
 
-export default function SpinPage() {
+export default async function SpinPage() {
+  const records = await listRecentSpins();
+
   return (
     <div className="space-y-8">
       <header className="flex flex-col gap-2">
@@ -18,7 +21,7 @@ export default function SpinPage() {
       <SpinShell
         initialOptions={MOCK_FOOD_OPTIONS}
         initialMeal="lunch"
-        initialRecords={MOCK_SPIN_RECORDS}
+        initialRecords={records}
       />
     </div>
   );
