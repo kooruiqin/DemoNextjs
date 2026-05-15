@@ -22,6 +22,7 @@ type TopNavProps = {
 const NAV = [
   { href: "/", label: "Home", icon: Home },
   { href: "/spin", label: "Spin", icon: UtensilsCrossed },
+  { href: "/todo", label: "To-do", icon: CalendarCheck },
   { href: "/wallet", label: "Wallet", icon: Wallet },
 ] as const;
 

@@ -19,7 +19,7 @@ export const createTodoSchema = z.object({
   title: titleField,
   eventDate: dateOnly,
   eventTime: timeOnly.nullable().optional(),
-  priority: todoPrioritySchema.default("normal"),
+  priority: todoPrioritySchema,
   label: labelField,
   notes: notesField,
 });
